@@ -42,7 +42,7 @@ package com.example.myapplication_ejmplo.classes
         println(person.name)
         println(person.age)
 
-        Person.displayInformation()
+        person.displayInformation()
 
     }
 
