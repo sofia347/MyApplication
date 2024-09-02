@@ -43,7 +43,6 @@ package com.example.myapplication_ejmplo.classes
         println(person.age)
 
         person.displayInformation()
-
     }
 
     fun add():Int{
