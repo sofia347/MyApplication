@@ -121,6 +121,7 @@ fun ModifierExample3(){
         Text(text = "Item 3")
         Text(text = "Item 4")
         Text(text = "Item 5")
+        Text(text = "Item 6")
     }
 }
 
