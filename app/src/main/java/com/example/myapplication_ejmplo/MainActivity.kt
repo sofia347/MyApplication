@@ -1,9 +1,11 @@
 package com.example.myapplication_ejmplo
 
 import android.os.Bundle
+import androidx.compose.ui.unit.sp
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,7 +23,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.Color.Companion.Cyan
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplication_ejmplo.ui.theme.MyApplication_EjmploTheme
@@ -72,7 +84,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     MyApplication_EjmploTheme {
@@ -80,7 +92,7 @@ fun GreetingPreview() {
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun ModifierExample(){
     Column(
@@ -90,7 +102,7 @@ fun ModifierExample(){
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun ModifierExample2(){
     Column(
@@ -103,7 +115,7 @@ fun ModifierExample2(){
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun ModifierExample3(){
     Column(
@@ -128,3 +140,41 @@ fun ModifierExample3(){
 fun clickAction(){
     println("Column Clicked")
 }
+
+@Preview(showBackground = true)
+@Composable
+fun CustomText(){
+    Column {
+        Text(
+            stringResource(R.string.hello_wordls_text),
+            color = colorResource(R.color.purple_500),
+            fontSize = 28.sp,
+            fontStyle = FontStyle.Italic,
+            fontWeight = FontWeight.ExtraBold
+        )
+        val gardientColors = listOf(Cyan, Blue)
+        Text(
+            stringResource(R.string.hello_wordls_text),
+            style = TextStyle(brush = Brush.linearGradient(colors = gardientColors))
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Picture(){
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Black)
+    ){
+         Image(
+            modifier = Modifier
+                .fillMaxWidth(),
+            painter = painterResource(R.drawable.eslogan),
+             contentDescription = "LOGO DE UM",
+             contentScale = ContentScale.Crop
+        )
+    }
+}
+

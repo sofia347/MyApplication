@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">My Application_Ejmplo</string>
+    <string name="hello_wordls_text">Hello World</string>
 </resources>
