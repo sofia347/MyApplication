@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">My Application_Ejmplo</string>
     <string name="hello_wordls_text">Hello World</string>
+    <string name="text_card">“UniversityMatch” es una página web que reúne toda la información relevante sobre las universidades públicas y privadas del estado de Aguascalientes. Nuestra plataforma ofrece un catálogo exhaustivo donde los estudiantes pueden filtrar por carreras, ubicación, costos, y mucho más, facilitando así la búsqueda de la universidad ideal.</string>
 </resources>

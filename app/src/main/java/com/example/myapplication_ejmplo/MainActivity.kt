@@ -17,7 +17,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplication_ejmplo.ui.theme.MyApplication_EjmploTheme
@@ -44,14 +49,16 @@ class MainActivity : ComponentActivity() {
         //enableEdgeToEdge()
         setContent {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
             ){
                 Text(text = "Simple Text")
-                ModifierExample()
-                ModifierExample2()
-                ModifierExample3()
+                //ModifierExample()
+                //ModifierExample2()
+                //ModifierExample3()
             }
 
             //Layouts
@@ -160,7 +167,7 @@ fun CustomText(){
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun Picture(){
     Column(
@@ -177,4 +184,80 @@ fun Picture(){
         )
     }
 }
+
+//@Preview(showBackground = true)
+@Composable
+fun Content1(){
+    Card(
+        modifier = Modifier
+            .background(Color.Blue)
+            .fillMaxWidth()
+            .padding(5.dp)
+    ){
+        Text(text = "This is a title"
+            , fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(10.dp)
+        )
+        Image(
+            modifier = Modifier.fillMaxWidth(),
+            painter = painterResource(id = R.drawable.eslogan),
+            contentDescription = "Eslogan",
+            contentScale = ContentScale.Crop)
+
+        Text(stringResource(R.string.text_card),
+            textAlign = TextAlign.Justify,
+            lineHeight = 18.sp,
+            modifier = Modifier
+                .padding(10.dp))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Content2() {
+    Card(
+        modifier = Modifier
+            .background(Color.Blue)
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
+        Row( // Cambiamos a Row para disposición horizontal
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(200.dp) // Ajusta el tamaño de la imagen según tu diseño
+                    .padding(end = 10.dp), // Añade un poco de espacio a la derecha de la imagen
+                painter = painterResource(id = R.drawable.logoletras),
+                contentDescription = "Eslogan",
+                contentScale = ContentScale.Inside
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth() // Ajusta para que el texto ocupe el espacio restante
+            ) {
+                Text(
+                    text = "This is a title",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(bottom = 5.dp)
+                )
+                Text(
+                    stringResource(R.string.text_card),
+                    textAlign = TextAlign.Justify,
+                    lineHeight = 15.sp,
+                    maxLines = 10,
+                    modifier = Modifier
+                )
+            }
+        }
+    }
+}
+
 
