@@ -1,5 +1,5 @@
 package com.example.myapplication_ejmplo
-
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.compose.ui.unit.sp
 import androidx.activity.ComponentActivity
@@ -21,6 +21,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,12 +46,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplication_ejmplo.ui.theme.MyApplication_EjmploTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.ui.layout.layoutId
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.myapplication_ejmplo.ui.screens.HomeScreen
+import com.example.myapplication_ejmplo.ui.screens.MenuScreen
+
+//import androidx.navigation.compose.NavHostController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
         setContent {
+            ComposeMultiScreenApp()
+
+
+
+            /*
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -59,7 +78,7 @@ class MainActivity : ComponentActivity() {
                 //ModifierExample()
                 //ModifierExample2()
                 //ModifierExample3()
-            }
+            }*/
 
             //Layouts
             /*Column {
@@ -82,7 +101,7 @@ class MainActivity : ComponentActivity() {
         */}
     }
 }
-
+/*
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -223,15 +242,14 @@ fun Content2() {
             .fillMaxWidth()
             .padding(5.dp)
     ) {
-        Row( // Cambiamos a Row para disposición horizontal
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
             Image(
                 modifier = Modifier
-                    .size(200.dp) // Ajusta el tamaño de la imagen según tu diseño
-                    .padding(end = 10.dp), // Añade un poco de espacio a la derecha de la imagen
+                    .size(200.dp), // Ajusta el tamaño de la imagen según tu diseño
                 painter = painterResource(id = R.drawable.logoletras),
                 contentDescription = "Eslogan",
                 contentScale = ContentScale.Inside
@@ -258,6 +276,69 @@ fun Content2() {
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BoxExample1(){
+    Box(
+        modifier = Modifier
+            .background(Color.Blue)
+            .fillMaxWidth()
+            .padding(5.dp)
+    ){
+        Image(painterResource(R.drawable.logoletras),
+            contentDescription = "Logo y nombre",
+            contentScale = ContentScale.FillBounds)
+
+        Row(
+            modifier = Modifier
+                .background(Color.Gray)
+                .fillMaxWidth()
+        ){
+            Icon(
+                Icons.Filled.AccountBox,
+                contentDescription = "Icon"
+            )
+            Text(text = "Text")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BoxExapmple2(){
+    Box(
+        modifier = Modifier
+            .background(Color.Magenta)
+            .padding(5.dp)
+            .size(250.dp)
+    ){
+        Text(text = "TopStart", Modifier.align(Alignment.TopStart))
+        Text(text = "TopEnd", Modifier.align(Alignment.TopEnd))
+        Text(text = "CenterStart", Modifier.align(Alignment.CenterStart))
+        Text(text = "Center", Modifier.align(Alignment.Center))
+        Text(text = "CenterEnd", Modifier.align(Alignment.CenterEnd))
+        Text(text = "BottomStart", Modifier.align(Alignment.BottomStart))
+        Text(text = "BottomEnd", Modifier.align(Alignment.BottomEnd))
+    }
+}*/
+
+@Composable
+fun ComposeMultiScreenApp(){
+    val navController = rememberNavController()
+    Surface (color = Color.White){
+        SetupNavGraph(navController = navController)
+    }
+}
+
+@Composable
+fun SetupNavGraph(navController: NavHostController){
+    NavHost(navController = navController, startDestination = "menu"){
+        composable("menu"){MenuScreen(navController)}
+        composable("home"){ HomeScreen(navController)}
+    }
+
 }
 
 
