@@ -49,6 +49,7 @@ import com.example.myapplication_ejmplo.ui.theme.MyApplication_EjmploTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.ui.layout.layoutId
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
