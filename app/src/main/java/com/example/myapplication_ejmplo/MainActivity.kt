@@ -618,9 +618,9 @@ fun CamScanner(){
                         .padding(16.dp).align(Alignment.TopEnd)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.camara), // Cambia esto por tu imagen
+                        painter = painterResource(id = R.drawable.camara),
                         contentDescription = "Camera",
-                        modifier = Modifier.size(28.dp) // Ajusta el tamaño según sea necesario
+                        modifier = Modifier.size(28.dp)
                     )
                 }
             }
