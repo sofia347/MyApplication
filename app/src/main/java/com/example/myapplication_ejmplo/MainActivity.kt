@@ -386,7 +386,7 @@ fun CamScanner(){
                 
                 Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(14.dp)){
                     Image(
-                        painter = painterResource(id = R.drawable.iconuno),
+                        painter = painterResource(id = R.drawable.iconouno),
                         contentDescription = "Icon uno",
                         modifier = Modifier.size(25.dp).clickable {  }
                     )
@@ -394,7 +394,7 @@ fun CamScanner(){
                 }
                 Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(14.dp)){
                     Image(
-                        painter = painterResource(id = R.drawable.icondos),
+                        painter = painterResource(id = R.drawable.iconodos),
                         contentDescription = "Icon dos",
                         modifier = Modifier.size(25.dp).clickable {  }
                     )
@@ -402,7 +402,7 @@ fun CamScanner(){
                 }
                 Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(14.dp)){
                     Image(
-                        painter = painterResource(id = R.drawable.icontres),
+                        painter = painterResource(id = R.drawable.iconotres),
                         contentDescription = "Icon tres",
                         modifier = Modifier.size(25.dp).clickable {  }
                     )
@@ -411,7 +411,7 @@ fun CamScanner(){
                 }
                 Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(14.dp)){
                     Image(
-                        painter = painterResource(id = R.drawable.iconcuatro),
+                        painter = painterResource(id = R.drawable.iconocuatro),
                         contentDescription = "Icon cuatro",
                         modifier = Modifier.size(25.dp).clickable {  }
                     )
@@ -424,7 +424,7 @@ fun CamScanner(){
 
                 Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(14.dp)){
                     Image(
-                        painter = painterResource(id = R.drawable.iconcinco),
+                        painter = painterResource(id = R.drawable.iconocinco),
                         contentDescription = "Icon cinco",
                         modifier = Modifier.size(25.dp).clickable {  }
                     )
@@ -432,7 +432,7 @@ fun CamScanner(){
                 }
                 Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(14.dp)){
                     Image(
-                        painter = painterResource(id = R.drawable.iconseis),
+                        painter = painterResource(id = R.drawable.iconoseis),
                         contentDescription = "Icon seis",
                         modifier = Modifier.size(25.dp).clickable {  }
                     )
@@ -441,7 +441,7 @@ fun CamScanner(){
                 }
                 Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(14.dp)){
                     Image(
-                        painter = painterResource(id = R.drawable.iconsiete),
+                        painter = painterResource(id = R.drawable.iconosiete),
                         contentDescription = "Icon siete",
                         modifier = Modifier.size(25.dp).clickable {  }
                     )
@@ -620,7 +620,7 @@ fun CamScanner(){
                     Image(
                         painter = painterResource(id = R.drawable.camara), // Cambia esto por tu imagen
                         contentDescription = "Camera",
-                        modifier = Modifier.size(28.dp).background(Color(0,181,148)) // Ajusta el tamaño según sea necesario
+                        modifier = Modifier.size(28.dp) // Ajusta el tamaño según sea necesario
                     )
                 }
             }
