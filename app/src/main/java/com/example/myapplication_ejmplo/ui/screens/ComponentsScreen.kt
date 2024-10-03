@@ -259,6 +259,48 @@ fun ComponentsScreen(navController: NavController) {
                     }
                 }
             )
+            //Content 13
+            HorizontalDivider()
+            NavigationDrawerItem(
+                label = { Text(text = "SnackBars")},
+                selected = false,
+                onClick = {
+                    component = "SnackBars"
+                    scope.launch {
+                        drawerState.apply {
+                            close()
+                        }
+                    }
+                }
+            )
+            //Content 14
+            HorizontalDivider()
+            NavigationDrawerItem(
+                label = { Text(text = "AlertDialogs")},
+                selected = false,
+                onClick = {
+                    component = "AlertDialogs"
+                    scope.launch {
+                        drawerState.apply {
+                            close()
+                        }
+                    }
+                }
+            )
+            //Content 15
+            HorizontalDivider()
+            NavigationDrawerItem(
+                label = { Text(text = "Bars")},
+                selected = false,
+                onClick = {
+                    component = "Bars"
+                    scope.launch {
+                        drawerState.apply {
+                            close()
+                        }
+                    }
+                }
+            )
 
         }
     }) {
@@ -289,6 +331,12 @@ fun ComponentsScreen(navController: NavController) {
                     }
                 "DatePickers" ->
                     DatePickers()
+                "SnackBars" ->
+                    SnackBars()
+                "AlertDialogs" ->
+                    AlertDialogs()
+                "Bars" ->
+                    Bars()
             }
         }
     }
@@ -603,5 +651,107 @@ fun convertMillisToDate(millis: Long): String {
     return formatter.format(Date(millis))
 }
 
+@Composable
+fun SnackBars() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        var snackState = remember { SnackbarHostState() }
+        val snackScope = rememberCoroutineScope()
 
+        SnackbarHost(hostState = snackState, Modifier)
+
+        fun launchSnackBar(){
+            snackScope.launch { snackState.showSnackbar("The message was sent") }
+        }
+
+        Button(:: launchSnackBar) {
+            Text("Show SnackBar")
+
+        }
+
+    }
+}
+
+@Composable
+fun AlertDialogs() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        var showAlertDialog by remember { mutableStateOf(false) }
+        var selectedOption by remember { mutableStateOf("") }
+
+        if (showAlertDialog){
+            AlertDialog(
+                icon = { Icon(Icons.Filled.Warning, contentDescription = "f")},
+                title = { Text(text = "Confirm Deletion") },
+                text = { Text(text = "Are you sure you want to delete this file?") },
+                onDismissRequest = {},
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            selectedOption = "Confirm"
+                            showAlertDialog = false
+                        }
+                    )
+                    {
+                        Text(text = "Confirm")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            selectedOption = "Dismiss"
+                            showAlertDialog = false
+                        }
+                    )
+                    {
+                        Text(text = "Dismiss")
+                    }
+                }
+
+            )
+        }
+
+        Text(selectedOption)
+
+        Button(onClick = {showAlertDialog = true}){
+            Text(text = "Show alert dialog")
+        }
+
+    }
+}
+
+@Composable
+fun Bars(){
+    Box (modifier = Modifier
+        .fillMaxSize()
+        .background(Color.DarkGray)
+    ){
+        Row (modifier = Modifier
+            .align(Alignment.TopCenter)
+            .fillMaxWidth()
+            .background(Color.Black)
+            .padding(10.dp, 50.dp, 10.dp, 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Icon(Icons.Filled.Menu, contentDescription = "", tint = Color.White )
+            Text(
+                text = "App Title",
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+            Icon(Icons.Filled.Settings, contentDescription = "", tint = Color.White )
+
+        }
+
+    }
+}
 
