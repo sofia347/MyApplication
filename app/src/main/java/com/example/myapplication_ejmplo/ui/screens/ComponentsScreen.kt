@@ -1,5 +1,6 @@
 package com.example.myapplication_ejmplo.ui.screens
 
+import android.graphics.Paint.Align
 import android.widget.TimePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,12 +8,17 @@ import androidx.compose.material3.Button
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
@@ -25,6 +31,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -71,12 +78,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
+import com.example.myapplication_ejmplo.R
+import com.example.myapplication_ejmplo.data.model.PostModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -301,6 +312,20 @@ fun ComponentsScreen(navController: NavController) {
                     }
                 }
             )
+            //Content 16
+            HorizontalDivider()
+            NavigationDrawerItem(
+                label = { Text(text = "Posts")},
+                selected = false,
+                onClick = {
+                    component = "Posts"
+                    scope.launch {
+                        drawerState.apply {
+                            close()
+                        }
+                    }
+                }
+            )
 
         }
     }) {
@@ -327,8 +352,7 @@ fun ComponentsScreen(navController: NavController) {
                 "Badges" ->
                     Badges()
                 "TimePickers" ->
-                    TimePickers(onConfirm = { /*TODO*/ }) {
-                    }
+                    TimePickers()
                 "DatePickers" ->
                     DatePickers()
                 "SnackBars" ->
@@ -580,8 +604,6 @@ fun Badges() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimePickers(
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -728,30 +750,153 @@ fun AlertDialogs() {
     }
 }
 
+
 @Composable
-fun Bars(){
-    Box (modifier = Modifier
-        .fillMaxSize()
-        .background(Color.DarkGray)
-    ){
-        Row (modifier = Modifier
-            .align(Alignment.TopCenter)
-            .fillMaxWidth()
-            .background(Color.Black)
-            .padding(10.dp, 50.dp, 10.dp, 10.dp),
+fun Bars() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.DarkGray)
+    ) {
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .fillMaxWidth()
+                .background(Color.Black)
+                .padding(10.dp, 50.dp, 10.dp, 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Icon(Icons.Filled.Menu, contentDescription = "", tint = Color.White )
+        ) {
+            Icon(
+                Icons.Filled.Menu,
+                contentDescription = "",
+                tint = Color.White
+            )
             Text(
                 text = "App Title",
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
-            Icon(Icons.Filled.Settings, contentDescription = "", tint = Color.White )
-
+            Icon(
+                Icons.Filled.Settings,
+                contentDescription = "",
+                tint = Color.White
+            )
         }
 
+        var post = arrayOf(
+            PostModel(1, "Title 1", "Text1"),
+            PostModel(2, "Title 2", "Text2"),
+            PostModel(3, "Title 3", "Text3"),
+            PostModel(4, "Title 4", "Text4")
+        )
+
+        Column(
+            modifier = Modifier
+                .padding(10.dp, 90.dp, 10.dp, 50.dp)
+                .fillMaxSize()
+        ){
+            Posts(post)
+        }
+
+
+        Row(
+            modifier = Modifier
+                //alinier al top center falta **
+                .fillMaxWidth()
+                .height(65.dp)
+                .background(Color.Black)
+                .padding(2.dp, 5.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Column {
+                IconButton(
+                    onClick = {}, modifier = Modifier
+                        .size(30.dp)
+                ) {
+                    Icon(
+                        Icons.Outlined.Home, contentDescription = "", tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+
+                }
+                Text(text = "Home", color = Color.White)
+            }
+            Column {
+                IconButton(
+                    onClick = {}, modifier = Modifier
+                        .size(30.dp)
+                ) {
+                    Icon(
+                        Icons.Outlined.Home, contentDescription = "", tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+
+                }
+                Text(text = "Alerts", color = Color.White)
+            }
+            Column {
+                IconButton(
+                    onClick = {}, modifier = Modifier
+                        .size(30.dp)
+                ) {
+                    Icon(
+                        Icons.Outlined.Home, contentDescription = "", tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+
+                }
+                Text(text = "XD", color = Color.White)
+            }
+            Column {
+                IconButton(
+                    onClick = {}, modifier = Modifier
+                        .size(30.dp)
+                ) {
+                    Icon(
+                        Icons.Outlined.Home, contentDescription = "", tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+
+                }
+                Text(text = "other", color = Color.White)
+            }
+            Column {
+                IconButton(
+                    onClick = {}, modifier = Modifier
+                        .size(30.dp)
+                ) {
+                    Icon(
+                        Icons.Outlined.Home, contentDescription = "", tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+
+                }
+                Text(text = "Other", color = Color.White)
+            }
+        }
     }
 }
 
+@Composable
+fun Posts(arrayPosts : Array<PostModel>) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        items(arrayPosts) { post ->
+            Text(
+                text = post.title,
+                color = Color.White,
+                fontSize = 16.sp
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            HorizontalDivider(thickness = 2.dp)
+        }
+    }
+}
