@@ -27,7 +27,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
+//import coil.compose.AsyncImage
+
 @Composable
 fun LoginScreen(navController: NavHostController){
     Column(
@@ -57,11 +58,11 @@ fun LoginForm(navController: NavHostController){
         Column(modifier = Modifier
             .padding(20.dp)
         ){
-            AsyncImage(
+            /*AsyncImage(
                 model = "",
                 contentDescription = "My band",
                 contentScale = ContentScale.Fit
-            )
+            */
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),

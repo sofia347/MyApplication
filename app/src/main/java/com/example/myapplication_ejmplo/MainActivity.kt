@@ -54,9 +54,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication_ejmplo.ui.screens.Components
+import com.example.myapplication_ejmplo.ui.screens.ContactoCalendario
 import com.example.myapplication_ejmplo.ui.screens.HomeScreen
 import com.example.myapplication_ejmplo.ui.screens.LoginScreen
 import com.example.myapplication_ejmplo.ui.screens.MenuScreen
+import com.example.myapplication_ejmplo.ui.screens.ActividadScreen
+import com.example.myapplication_ejmplo.ui.screens.BiometricaScreen
+import com.example.myapplication_ejmplo.ui.screens.CamaraScreen
+import com.example.myapplication_ejmplo.ui.screens.ConectividadScreen
+import com.example.myapplication_ejmplo.ui.screens.LocalizacionScreen
+import com.example.myapplication_ejmplo.ui.screens.SegundoPlanoScreen
+import com.example.myapplication_ejmplo.ui.screens.Sensores
 
 //import androidx.navigation.compose.NavHostController
 
@@ -340,6 +348,14 @@ fun SetupNavGraph(navController: NavHostController){
         composable("home"){ HomeScreen(navController)}
         composable("components"){ Components(navController)}
         composable("login"){ LoginScreen(navController)}
+        composable("activity"){ ActividadScreen(navController)}
+        composable("biometrica"){ BiometricaScreen(navController)}
+        composable("camara"){ CamaraScreen(navController)}
+        composable("conectividad"){ ConectividadScreen(navController)}
+        composable("contacto"){ ContactoCalendario(navController) }
+        composable("local"){ LocalizacionScreen(navController)}
+        composable("sensores"){ Sensores(navController)}
+        composable("segundo"){ SegundoPlanoScreen(navController)}
     }
 
 }
