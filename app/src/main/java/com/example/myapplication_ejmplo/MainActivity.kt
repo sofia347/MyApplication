@@ -63,7 +63,7 @@ import com.example.myapplication_ejmplo.ui.screens.BiometricaScreen
 import com.example.myapplication_ejmplo.ui.screens.CamaraScreen
 import com.example.myapplication_ejmplo.ui.screens.ConectividadScreen
 import com.example.myapplication_ejmplo.ui.screens.LocalizacionScreen
-import com.example.myapplication_ejmplo.ui.screens.SegundoPlanoScreen
+import SegundoPlanoScreen
 import com.example.myapplication_ejmplo.ui.screens.Sensores
 
 //import androidx.navigation.compose.NavHostController
