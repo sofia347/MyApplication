@@ -71,6 +71,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //SEGUNDO PLANO
+    implementation ("androidx.compose.ui:ui:1.3.1")
+    implementation ("androidx.activity:activity-compose:1.6.1")
+    implementation ("androidx.work:work-runtime-ktx:2.7.1")
     
 
 
