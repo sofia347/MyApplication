@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+    <resources>
 
-    <style name="Theme.MyApplication_Ejmplo" parent="android:Theme.Material.Light.NoActionBar" />
+        <!-- Tema basado en AppCompat -->
+        <style name="Theme.MyApplication_Ejmplo" parent="Theme.AppCompat.Light.NoActionBar">
+        </style>
 
-</resources>
+    </resources>

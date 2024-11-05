@@ -85,7 +85,7 @@ dependencies {
     implementation ("androidx.work:work-runtime-ktx:2.7.1")
 
     //BIOMETRICAS
-    implementation ("androidx.biometric:biometric:1.1.0")
+    implementation ("androidx.biometric:biometric:1.2.0-alpha03")
     
 
 

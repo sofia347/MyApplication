@@ -16,7 +16,6 @@ fun MenuScreen(navController: NavController){
         Button(onClick = {navController.navigate("segundo")}){Text(text = "Programacion de tareas en 2do plano") }
         Button(onClick = {navController.navigate("local")}){Text(text = "Servicios de localizacion") }
         Button(onClick = {navController.navigate("contacto")}){Text(text = "Accesso a contactos y calendario") }
-        Button(onClick = {navController.navigate("biometrica")}){Text(text = "Biometricas") }
         Button(onClick = {navController.navigate("camara")}){Text(text = "Acceso a camara y manejo de archivos") }
         Button(onClick = {navController.navigate("conectividad")}){Text(text = "Conectiidad WiFi y datos") }
     }

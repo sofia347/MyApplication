@@ -1,15 +1,9 @@
 package com.example.myapplication_ejmplo
+
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.Surface
 import androidx.navigation.NavHostController
@@ -27,58 +21,42 @@ import com.example.myapplication_ejmplo.ui.screens.CamaraScreen
 import com.example.myapplication_ejmplo.ui.screens.ConectividadScreen
 import com.example.myapplication_ejmplo.ui.screens.LocalizacionScreen
 import SegundoPlanoScreen
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication_ejmplo.ui.Biometrics.BiometricPromptManager
 import com.example.myapplication_ejmplo.ui.screens.Sensores
 
 //import androidx.navigation.compose.NavHostController
 
 class MainActivity : AppCompatActivity() {
-    private  val promptManager  by lazy{
-        BiometricPromptManager(this)
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            BiometricsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    // ------------------- MAIN CONTENT -------------------
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ){
-                        ComposeMultiScreenApp(promptManager)
-
-
-                    }
-                }
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            enableEdgeToEdge()
+            setContent {
+                ComposeMultiScreenApp(this)
             }
         }
     }
-}
 
 
 @Composable
-fun ComposeMultiScreenApp(promptManager:BiometricPromptManager){
+fun ComposeMultiScreenApp(activity: AppCompatActivity){
     val navController = rememberNavController()
-    Surface (color = Color.White){
-        SetupNavGraph(navController = navController, promptManage)
+    Surface(color=Color.White){
+        SetupNavGraph(navController=navController,activity) //función propia //crea el grafo recordando el navcontroller donde nos encontramos
     }
 }
 
 @Composable
-fun SetupNavGraph(navController: NavHostController, activity: AppCompatActivity){
-    NavHost(navController = navController, startDestination = "login"){
+fun SetupNavGraph(navController: NavHostController,activity: AppCompatActivity){
+    NavHost(navController = navController, startDestination = "biometrics"){
         composable("menu"){MenuScreen(navController)}
         composable("home"){ HomeScreen(navController)}
         composable("components"){ Components(navController)}
         composable("login"){ LoginScreen(navController)}
         composable("activity"){ ActividadScreen(navController)}
-        composable("biometrica"){ BiometricsScreen(activity)}
+
+        composable("biometrics"){ BiometricsScreen(navController = navController, activity = activity)}
         composable("camara"){ CamaraScreen(navController)}
         composable("conectividad"){ ConectividadScreen(navController)}
         composable("contacto"){ ContactoCalendario(navController) }
