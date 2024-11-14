@@ -19,7 +19,7 @@ import com.example.myapplication_ejmplo.ui.screens.ActividadScreen
 import com.example.myapplication_ejmplo.ui.screens.BiometricsScreen
 import com.example.myapplication_ejmplo.ui.screens.CamaraScreen
 import com.example.myapplication_ejmplo.ui.screens.ConectividadScreen
-import com.example.myapplication_ejmplo.ui.screens.LocalizacionScreen
+//import com.example.myapplication_ejmplo.ui.screens.LocalizacionScreen
 import SegundoPlanoScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -62,7 +62,7 @@ fun SetupNavGraph(navController: NavHostController,activity: AppCompatActivity){
             CamaraScreen(context)}
         composable("conectividad"){ ConectividadScreen(navController)}
         composable("contacto"){ ContactoCalendario(navController) }
-        composable("local"){ LocalizacionScreen(navController)}
+        //composable("local"){ LocalizacionScreen(navController)}
         composable("sensores"){ Sensores(navController)}
         composable("segundo"){ SegundoPlanoScreen(navController)}
     }
