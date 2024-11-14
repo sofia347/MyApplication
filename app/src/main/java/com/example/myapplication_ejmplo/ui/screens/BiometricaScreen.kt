@@ -78,7 +78,7 @@ fun BiometricsScreen(navController: NavController,activity:AppCompatActivity){
             }) {
                 Text(text = "Authenticate")
             }
-            Button(onClick = {navController.navigate("login")}){Text(text = "LOGIN") }
+            Button(onClick = {navController.navigate("menu")}){Text(text = "REGRESAR") }
             biometricResult?.let{ //like an if after the event
                     result -> // Do something according to the result
                 Text(

@@ -24,6 +24,7 @@ import SegundoPlanoScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.platform.LocalContext
 import com.example.myapplication_ejmplo.ui.screens.Sensores
 
 //import androidx.navigation.compose.NavHostController
@@ -31,7 +32,6 @@ import com.example.myapplication_ejmplo.ui.screens.Sensores
 class MainActivity : AppCompatActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            enableEdgeToEdge()
             setContent {
                 ComposeMultiScreenApp(this)
             }
@@ -49,7 +49,7 @@ fun ComposeMultiScreenApp(activity: AppCompatActivity){
 
 @Composable
 fun SetupNavGraph(navController: NavHostController,activity: AppCompatActivity){
-    NavHost(navController = navController, startDestination = "biometrics"){
+    NavHost(navController = navController, startDestination = "login"){
         composable("menu"){MenuScreen(navController)}
         composable("home"){ HomeScreen(navController)}
         composable("components"){ Components(navController)}
@@ -57,7 +57,9 @@ fun SetupNavGraph(navController: NavHostController,activity: AppCompatActivity){
         composable("activity"){ ActividadScreen(navController)}
 
         composable("biometrics"){ BiometricsScreen(navController = navController, activity = activity)}
-        composable("camara"){ CamaraScreen(navController)}
+        composable("camara"){
+            val context = LocalContext.current
+            CamaraScreen(context)}
         composable("conectividad"){ ConectividadScreen(navController)}
         composable("contacto"){ ContactoCalendario(navController) }
         composable("local"){ LocalizacionScreen(navController)}
