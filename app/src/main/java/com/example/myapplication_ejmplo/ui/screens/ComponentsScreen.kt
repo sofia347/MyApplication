@@ -103,9 +103,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
 import com.example.myapplication_ejmplo.R
+import com.example.myapplication_ejmplo.ui.components.PostCard
 import com.example.myapplication_ejmplo.data.model.MenuModel
 import com.example.myapplication_ejmplo.data.model.PostModel
-import com.example.myapplication_ejmplo.ui.components.PostCard
 import com.example.myapplication_ejmplo.ui.components.PostCardCompact
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
