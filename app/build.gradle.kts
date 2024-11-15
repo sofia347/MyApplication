@@ -80,14 +80,31 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //SEGUNDO PLANO
-    implementation ("androidx.compose.ui:ui:1.3.1")
-    implementation ("androidx.activity:activity-compose:1.6.1")
-    implementation ("androidx.work:work-runtime-ktx:2.7.1")
+    implementation("androidx.compose.ui:ui:1.3.1")
+    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
 
     //BIOMETRICAS
-    implementation ("androidx.biometric:biometric:1.2.0-alpha03")
-    
+    implementation("androidx.biometric:biometric:1.2.0-alpha03")
 
+    //Location
+    implementation("com.google.maps.android:maps-compose:2.14.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation("com.google.android.libraries.places:places:4.0.0")
+
+    //WIFI
+    implementation ("androidx.compose.ui:ui-tooling:1.7.5")
+    implementation ("androidx.activity:activity-compose:1.9.3")
+    implementation ("io.coil-kt:coil-compose:2.4.0")
+    implementation ("androidx.compose.material:material:1.7.5")
+
+    //TEST -APP
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation ("io.coil-kt:coil-compose:2.4.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
 
 }
