@@ -15,55 +15,64 @@ import com.example.myapplication_ejmplo.ui.screens.ContactoCalendario
 import com.example.myapplication_ejmplo.ui.screens.HomeScreen
 import com.example.myapplication_ejmplo.ui.screens.LoginScreen
 import com.example.myapplication_ejmplo.ui.screens.MenuScreen
-import com.example.myapplication_ejmplo.ui.screens.ActividadScreen
 import com.example.myapplication_ejmplo.ui.screens.BiometricsScreen
 import com.example.myapplication_ejmplo.ui.screens.CamaraScreen
-import com.example.myapplication_ejmplo.ui.screens.ConectividadScreen
-//import com.example.myapplication_ejmplo.ui.screens.LocalizacionScreen
 import SegundoPlanoScreen
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.LocalContext
-import com.example.myapplication_ejmplo.ui.screens.Sensores
-
-//import androidx.navigation.compose.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.example.myapplication_ejmplo.ui.Location.HomeView
+import com.example.myapplication_ejmplo.ui.Location.MapsSearchView
+import com.example.myapplication_ejmplo.ui.Location.SearchViewModel
+import com.example.myapplication_ejmplo.ui.NetworkAPI.NetworkMonitorScreen
 
 class MainActivity : AppCompatActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
+            val searchVM = SearchViewModel() // Instancia de SearchViewModel
             setContent {
-                ComposeMultiScreenApp(this)
+                ComposeMultiScreenApp(this, searchVM)
             }
         }
     }
 
 
 @Composable
-fun ComposeMultiScreenApp(activity: AppCompatActivity){
+fun ComposeMultiScreenApp(activity: AppCompatActivity, searchVM: SearchViewModel){
     val navController = rememberNavController()
     Surface(color=Color.White){
-        SetupNavGraph(navController=navController,activity) //función propia //crea el grafo recordando el navcontroller donde nos encontramos
+        SetupNavGraph(navController = navController, activity, searchVM)
     }
 }
 
 @Composable
-fun SetupNavGraph(navController: NavHostController,activity: AppCompatActivity){
+fun SetupNavGraph(navController: NavHostController,activity: AppCompatActivity, searchVM: SearchViewModel){
     NavHost(navController = navController, startDestination = "login"){
         composable("menu"){MenuScreen(navController)}
         composable("home"){ HomeScreen(navController)}
         composable("components"){ Components(navController)}
         composable("login"){ LoginScreen(navController)}
-        composable("activity"){ ActividadScreen(navController)}
-
         composable("biometrics"){ BiometricsScreen(navController = navController, activity = activity)}
         composable("camara"){
             val context = LocalContext.current
             CamaraScreen(context)}
-        composable("conectividad"){ ConectividadScreen(navController)}
+        composable("conectividad") { NetworkMonitorScreen(navController = navController, activity = activity) }
         composable("contacto"){ ContactoCalendario(navController) }
-        //composable("local"){ LocalizacionScreen(navController)}
-        composable("sensores"){ Sensores(navController)}
+        composable(
+            "MapsSearchView/{lat}/{long}/{address}",
+            arguments = listOf(
+                navArgument("lat") { type = NavType.FloatType },
+                navArgument("long") { type = NavType.FloatType },
+                navArgument("address") { type = NavType.StringType }
+            )
+        ) {
+            val lat = it.arguments?.getFloat("lat") ?: 0.0f
+            val long = it.arguments?.getFloat("long") ?: 0.0f
+            val address = it.arguments?.getString("address") ?: ""
+            MapsSearchView(lat.toDouble(), long.toDouble(), address)
+        }
+        composable("local"){ HomeView(navController, searchVM) }
         composable("segundo"){ SegundoPlanoScreen(navController)}
     }
 
