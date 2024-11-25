@@ -26,6 +26,7 @@ import com.example.myapplication_ejmplo.ui.Location.HomeView
 import com.example.myapplication_ejmplo.ui.Location.MapsSearchView
 import com.example.myapplication_ejmplo.ui.Location.SearchViewModel
 import com.example.myapplication_ejmplo.ui.NetworkAPI.NetworkMonitorScreen
+import com.example.myapplication_ejmplo.ui.components.ManageServiceScreen
 
 class MainActivity : AppCompatActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +75,10 @@ fun SetupNavGraph(navController: NavHostController,activity: AppCompatActivity, 
         }
         composable("local"){ HomeView(navController, searchVM) }
         composable("segundo"){ SegundoPlanoScreen(navController)}
+        composable("manage-service/{serviceId}"){
+            backStackEntry -> val serviceId = backStackEntry.arguments?.getString("serviceId")
+            ManageServiceScreen(navController, serviceId = serviceId)
+        }
     }
 
 }
