@@ -26,23 +26,35 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavController
 import com.example.myapplication_ejmplo.R
 import com.example.myapplication_ejmplo.data.model.Controller.ServiceViewModel
+import com.example.myapplication_ejmplo.data.model.ServiceEntity
 import com.example.myapplication_ejmplo.data.model.ServiceModel
 import com.example.myapplication_ejmplo.ui.components.ServiceCard
 import com.example.myapplication_ejmplo.ui.components.ServiceDetailCard
 import com.example.myapplication_ejmplo.ui.components.TopBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import com.example.myapplication_ejmplo.data.model.database.AppDatabase
+import com.example.myapplication_ejmplo.data.model.database.DatabaseProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen (navController: NavController, viewModel: ServiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    val db: AppDatabase = DatabaseProvider.getDatabase(LocalContext.current)
+
     var serviceDetail by remember { mutableStateOf<ServiceModel?>(null) }
     var sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = false
     )
     var showBottomSheet by remember { mutableStateOf(false) }
+
+    var services by remember {mutableStateOf<List<ServiceEntity>>(emptyList())}
+    val serviceDao = db.serviceDao()
+
     Scaffold(
         topBar = { TopBar("Password Manager", navController, false) },
         bottomBar = {
@@ -64,17 +76,10 @@ fun HomeScreen (navController: NavController, viewModel: ServiceViewModel = andr
         }
     ){ innerPadding ->
 
-        var services by remember {mutableStateOf<List<ServiceModel>>(emptyList())}
-        if(services.isEmpty()){
-            CircularProgressIndicator()
-        }
-        LaunchedEffect(Unit){
-            viewModel.getServices { response ->
-                if(response.isSuccessful){
-                    services = response.body()?: emptyList()
-                } else {
-                    println("failed to load posts")
-                }
+        LaunchedEffect(Unit) {
+            services =  withContext(Dispatchers.IO) {
+                viewModel.getServices(db)
+                serviceDao.getAll()
             }
         }
 
@@ -102,7 +107,7 @@ fun HomeScreen (navController: NavController, viewModel: ServiceViewModel = andr
         }
         if(showBottomSheet){
             ModalBottomSheet(
-                containerColor = colorResource(id = R.color.teal_200),
+                containerColor = colorResource(id = R.color.purple_200),
                 contentColor = Color.White,
                 modifier = Modifier.fillMaxHeight(),
                 onDismissRequest = { showBottomSheet = false },
