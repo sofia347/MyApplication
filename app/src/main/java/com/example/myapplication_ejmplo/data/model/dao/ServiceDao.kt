@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.OnConflictStrategy
+import androidx.room.Update
 import com.example.myapplication_ejmplo.data.model.ServiceEntity
 
 @Dao
@@ -20,4 +21,7 @@ interface ServiceDao {
 
     @Delete
     fun delete(service: ServiceEntity)
+
+    @Update
+    fun update(service: ServiceEntity)
 }
