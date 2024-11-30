@@ -45,14 +45,14 @@ class ServiceViewModel: ViewModel() {
         val serviceDao = db.serviceDao()
         viewModelScope.launch {
             try {
-                val response = api.getService(id) // Obtener el servicio desde la API
+                val response = api.getService(id)
                 if (response.isSuccessful) {
                     val serviceModel = response.body()
                     if (serviceModel != null) {
                         val serviceEntity = serviceModel.toServiceEntity()
                         withContext(Dispatchers.IO) {
                             try {
-                                serviceDao.insertAll(listOf(serviceEntity)) // Guardar en la base de datos
+                                serviceDao.insertAll(listOf(serviceEntity))
                             } catch (exception: Exception) {
                                 Log.d("error", "Insert failed: ${exception.message}")
                             }
@@ -63,10 +63,10 @@ class ServiceViewModel: ViewModel() {
                 val entity = withContext(Dispatchers.IO) {
                     serviceDao.show(id)
                 }
-                onResult(entity) // Retornar la entidad encontrada
+                onResult(entity)
             } catch (exception: Exception) {
                 Log.d("error", "API call failed: ${exception.message}")
-                onResult(null) // Retornar null en caso de error
+                onResult(null)
             }
         }
     }
@@ -86,10 +86,10 @@ class ServiceViewModel: ViewModel() {
                 withContext(Dispatchers.IO) {
                     serviceDao.insertAll(listOf(serviceEntity)) // Guarda el servicio en la BD local
                 }
-                onResult(true) // Operación exitosa
+                onResult(true)
             } catch (exception: Exception) {
                 Log.d("error", "Insert to DB failed: ${exception.message}")
-                onResult(false) // Manejo de errores
+                onResult(false)
             }
         }
     }

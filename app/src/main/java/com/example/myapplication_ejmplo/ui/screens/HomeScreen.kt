@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.myapplication_ejmplo.R
 import com.example.myapplication_ejmplo.data.model.Controller.ServiceViewModel
@@ -62,7 +63,6 @@ fun HomeScreen(
                 containerColor = Color.Black,
                 contentColor = Color.White
             ){
-
             }
         },
         floatingActionButton = {
@@ -89,7 +89,8 @@ fun HomeScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .background(colorResource(R.color.black))
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(bottom = 64.dp), // Aquí le agregamos un margen en la parte inferior
             state = listState
         ) {
             items(services) { service ->
