@@ -18,10 +18,13 @@ import com.example.myapplication_ejmplo.ui.screens.MenuScreen
 import com.example.myapplication_ejmplo.ui.screens.BiometricsScreen
 import com.example.myapplication_ejmplo.ui.screens.CamaraScreen
 import SegundoPlanoScreen
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.example.myapplication_ejmplo.data.model.database.AppDatabase
+import com.example.myapplication_ejmplo.data.model.database.DatabaseProvider
 import com.example.myapplication_ejmplo.ui.Location.HomeView
 import com.example.myapplication_ejmplo.ui.Location.MapsSearchView
 import com.example.myapplication_ejmplo.ui.Location.SearchViewModel
@@ -29,8 +32,16 @@ import com.example.myapplication_ejmplo.ui.NetworkAPI.NetworkMonitorScreen
 import com.example.myapplication_ejmplo.ui.components.ManageServiceScreen
 
 class MainActivity : AppCompatActivity() {
+        lateinit var database: AppDatabase
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
+            try{
+                database = DatabaseProvider.getDatabase(this)
+                Log.d("DB", "Database loaded successfully")
+            }catch (exception:Exception){
+                Log.d("DB", "error: $exception")
+            }
+
             val searchVM = SearchViewModel() // Instancia de SearchViewModel
             setContent {
                 ComposeMultiScreenApp(this, searchVM)

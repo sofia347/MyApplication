@@ -26,33 +26,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.myapplication_ejmplo.R
 import com.example.myapplication_ejmplo.data.model.Controller.ServiceViewModel
+import com.example.myapplication_ejmplo.data.model.ServiceEntity
 import com.example.myapplication_ejmplo.data.model.ServiceModel
+import com.example.myapplication_ejmplo.data.model.dao.ServiceDao
+import com.example.myapplication_ejmplo.data.model.database.AppDatabase
+import com.example.myapplication_ejmplo.data.model.database.DatabaseProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @Composable
 fun ManageServiceScreen(
     navController : NavController,
     serviceId: String?,
-    viewModel: ServiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: ServiceViewModel = viewModel()
 ){
     val service = remember {mutableStateOf(ServiceModel())}
     val context = LocalContext.current
     var bar_title by remember {mutableStateOf("Create new service")}
 
-    if(serviceId != null && serviceId != "0"){
+    val db: AppDatabase = DatabaseProvider.getDatabase(LocalContext.current)
+    val serviceDao = db.serviceDao()
+
+    if (serviceId != null && serviceId != "0") {
         bar_title = "Update service"
-        viewModel.showService(serviceId.toInt()){ response ->
-            if(response.isSuccessful){
-                service.value.name = response.body()?.name.toString()
-                service.value.username = response.body()?.username.toString()
-                service.value.password = response.body()?.password.toString()
-                service.value.description = response.body()?.description.toString()
+        viewModel.showService(db, serviceId.toInt()) { entity ->
+            if (entity != null) {
+                // Actualizar los valores del estado con los datos recuperados
+                service.value.name = entity.name
+                service.value.username = entity.username
+                service.value.password = entity.password
+                service.value.description = entity.description
             } else {
+                // Mostrar un mensaje si no se pudo cargar el servicio
                 Toast.makeText(
                     context,
                     "Failed to load a service",
@@ -161,13 +174,14 @@ fun ManageServiceScreen(
                     .padding(0.dp, 10.dp),
                 shape = CutCornerShape(4.dp),
                 onClick = {
+                    val db: AppDatabase = DatabaseProvider.getDatabase(context)
                     val serviceTemp = ServiceModel(
                         name = service.value.name,
                         username = service.value.username,
                         password = service.value.password,
                         description = service.value.description
                     )
-                    save(viewModel, context, serviceTemp, serviceId)
+                    save(viewModel, db, context, serviceTemp, serviceId)
                 }
             ) {
                 Text(if (serviceId == "0") "CREATE SERVICE" else "SAVE CHANGES")
@@ -188,7 +202,7 @@ fun ManageServiceScreen(
                         .padding(0.dp, 10.dp),
                     shape = CutCornerShape(4.dp),
                     onClick = {
-                        delete(viewModel, context, serviceId, navController)
+                        delete(viewModel, context, serviceId, navController, serviceDao)
                     }
                 ) {
                     Text("DELETE")
@@ -200,13 +214,17 @@ fun ManageServiceScreen(
 
 fun save(
     viewModel: ServiceViewModel,
+    db: AppDatabase,
     context: Context,
     service: ServiceModel,
     serviceId: String?
 ) {
+    val serviceDao = db.serviceDao()
+
     if (serviceId == "0") {
-        viewModel.createService(service) { response ->
-            if (response.isSuccessful) {
+        // Crear un nuevo servicio
+        viewModel.createService(service, db) { success ->
+            if (success) {
                 Toast.makeText(
                     context,
                     "Service created successfully",
@@ -215,51 +233,73 @@ fun save(
             } else {
                 Toast.makeText(
                     context,
-                    "Error: $${response.body()}",
+                    "Failed to create service",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
-    } else if (serviceId != null) {
-        viewModel.updateService(serviceId.toInt(), service) { response ->
-            if (response.isSuccessful) {
-                Toast.makeText(
-                    context,
-                    "Service updated successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    context,
-                    "Error: $${response.body()}",
-                    Toast.LENGTH_SHORT
-                ).show()
+    } else {
+        // Actualizar un servicio existente
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val updatedEntity = ServiceEntity(
+                    id = serviceId!!.toInt(),
+                    name = service.name,
+                    username = service.username,
+                    password = service.password,
+                    description = service.description,
+                    imageURL = service.imageURL,
+                )
+                serviceDao.update(updatedEntity) // Actualizar en la BD local
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        context,
+                        "Service updated successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (exception: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        context,
+                        "Failed to update service: ${exception.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
 }
 
+
 fun delete(
     viewModel: ServiceViewModel,
     context: Context,
     serviceId: String?,
-    navController: NavController
+    navController: NavController,
+    serviceDao: ServiceDao
 ) {
     if (serviceId != null && serviceId != "0") {
-        viewModel.deleteService(serviceId.toInt()) { response ->
-            if (response.isSuccessful) {
-                Toast.makeText(
-                    context,
-                    "Service deleted successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-                navController.popBackStack()
+        CoroutineScope(Dispatchers.IO).launch {
+            val service = serviceDao.show(serviceId.toInt())
+            if (service != null) {
+                serviceDao.delete(service)
+                CoroutineScope(Dispatchers.Main).launch {
+                    Toast.makeText(
+                        context,
+                        "Service deleted successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    navController.popBackStack()
+                }
             } else {
-                Toast.makeText(
-                    context,
-                    "Failed to delete service",
-                    Toast.LENGTH_SHORT
-                ).show()
+                CoroutineScope(Dispatchers.Main).launch {
+                    Toast.makeText(
+                        context,
+                        "Failed to delete service: Service not found",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

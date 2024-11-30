@@ -1,58 +1,122 @@
 package com.example.myapplication_ejmplo.data.model.Controller
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication_ejmplo.data.model.ServiceEntity
 import com.example.myapplication_ejmplo.data.model.ServiceModel
+import com.example.myapplication_ejmplo.data.model.database.AppDatabase
 import com.example.myapplication_ejmplo.data.model.network.RetrofitClient
+import com.example.myapplication_ejmplo.data.model.toServiceEntity
+import com.example.myapplication_ejmplo.data.model.toServiceEntityList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class ServiceViewModel: ViewModel() {
     val api = RetrofitClient.api
 
-    fun getServices(onResult: (Response<List<ServiceModel>>) -> Unit){
-        viewModelScope.launch{
-            try{
-                val response = api.getServices()
-                onResult(response)
+    fun getServices(db: AppDatabase){
+        val serviceDao = db.serviceDao()
+        viewModelScope.launch {
+            try {
+                val response =  api.getServices()
+                if (response.body()?.count()!! > 0){
+                    val serviceEntities = response.body()?.toServiceEntityList()
+                    if (serviceEntities != null) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            try {
+                                serviceDao.insertAll(serviceEntities)
+                            } catch (exception:Exception){
+                                Log.d("error", exception.toString())
+                            }
+                        }
+                    }
+                }
             } catch (exception:Exception){
                 print(exception)
-
             }
         }
     }
 
-    fun showService(id:Int, onResult: (Response<ServiceModel>) -> Unit){
+    fun showService(db: AppDatabase, id: Int, onResult: (ServiceEntity?) -> Unit) {
+        val serviceDao = db.serviceDao()
         viewModelScope.launch {
-            try{
+            try {
                 val response = api.getService(id)
-                onResult(response)
-            }catch(exception:Exception){
-                print(exception)
-
+                if (response.isSuccessful) {
+                    val serviceModel = response.body()
+                    if (serviceModel != null) {
+                        val serviceEntity = serviceModel.toServiceEntity()
+                        withContext(Dispatchers.IO) {
+                            try {
+                                serviceDao.insertAll(listOf(serviceEntity))
+                            } catch (exception: Exception) {
+                                Log.d("error", "Insert failed: ${exception.message}")
+                            }
+                        }
+                    }
+                }
+                // Recuperar desde la base de datos local
+                val entity = withContext(Dispatchers.IO) {
+                    serviceDao.show(id)
+                }
+                onResult(entity)
+            } catch (exception: Exception) {
+                Log.d("error", "API call failed: ${exception.message}")
+                onResult(null)
             }
         }
     }
 
-    fun createService(service: ServiceModel, onResult: (Response<ServiceModel>) -> Unit){
-        viewModelScope.launch{
-            try{
-                val response = api.createService(service)
-                onResult(response)
-            }catch(exception:Exception){
-                print(exception)
+    fun createService(service: ServiceModel, db: AppDatabase, onResult: (Boolean) -> Unit) {
+        val serviceDao = db.serviceDao()
+        viewModelScope.launch {
+            try {
+                val serviceEntity = ServiceEntity(
+                    id = 99,
+                    name = service.name,
+                    username = service.username,
+                    password = service.password,
+                    description = service.description,
+                    imageURL = service.imageURL
+                )
+                withContext(Dispatchers.IO) {
+                    serviceDao.insertAll(listOf(serviceEntity)) // Guarda el servicio en la BD local
+                }
+                onResult(true)
+            } catch (exception: Exception) {
+                Log.d("error", "Insert to DB failed: ${exception.message}")
+                onResult(false)
             }
         }
     }
 
-    fun updateService(id:Int, service:ServiceModel, onResult: (Response<ServiceModel>) -> Unit){
-        try{
-            viewModelScope.launch {
-                val response = api.updateService(id, service)
-                onResult(response)
+    fun updateService(serviceId: Int, updatedService: ServiceModel, db: AppDatabase, onResult: (Boolean) -> Unit) {
+        val serviceDao = db.serviceDao()
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    val existingService = serviceDao.show(serviceId)
+                    if (existingService != null) {
+                        val updatedEntity = existingService.copy(
+                            name = updatedService.name,
+                            username = updatedService.username,
+                            password = updatedService.password,
+                            description = updatedService.description
+                        )
+                        serviceDao.update(updatedEntity)
+                        onResult(true)
+                    } else {
+                        onResult(false)
+                    }
+                }
+            } catch (exception: Exception) {
+                Log.d("error", "Failed to update service: ${exception.message}")
+                onResult(false)
             }
-        }catch(exception:Exception){
-            print(exception)
         }
     }
 

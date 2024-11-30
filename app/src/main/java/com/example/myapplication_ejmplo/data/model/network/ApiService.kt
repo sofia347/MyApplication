@@ -25,4 +25,11 @@ interface ApiService {
     @DELETE("service/{id}")
     suspend fun deleteService(@Path("id") id:Int):Response<ServiceModel>
 
+    @POST("user")
+    suspend fun login(@Body loginRequest: LoginRequest): Response<Unit>
 }
+
+data class LoginRequest(
+    val username: String,
+    val password: String
+)
