@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.example.myapplication_ejmplo"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.myapplication_ejmplo"
@@ -69,6 +70,8 @@ dependencies {
     implementation(libs.androidx.foundation.layout.android)
     implementation(libs.androidx.games.activity)
     implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.media3.database)
     //implementation(libs.androidx.window.core.android)
     //implementation(libs.androidx.navigation.runtime.ktx)
     testImplementation(libs.junit)
@@ -106,5 +109,8 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    //SQLite
+    val room_version = "2.6.1"
+    ksp("androidx.room:room-compiler:$room_version")
 
 }
